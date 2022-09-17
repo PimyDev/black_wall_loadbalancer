@@ -1,0 +1,9 @@
+{
+  "services": [
+    "http://target_service_1/",
+    "http://target_service_2/",
+    "http://target_service_3/",
+    "http://target_service_4/",
+    "http://target_service_5/"
+  ]
+}

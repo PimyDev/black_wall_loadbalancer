@@ -1,0 +1,85 @@
+version: '3.7'
+
+services:
+  redis:
+    image: redis
+    restart: on-failure
+    volumes:
+      - ./data/redis-data:/data
+  load_balancer:
+    build:
+      context: ./src/load_balancer
+      dockerfile: api.dockerfile
+    environment:
+      MAX_WORKERS: 1
+      APP_PREFIX: "balancer"
+    volumes:
+      - ./target_services.json:/app/app/target_services.json
+    ports:
+      - "1000:80"
+    env_file:
+      - .env
+  background:
+    build:
+      context: ./src/load_balancer
+      dockerfile: background.dockerfile
+    environment:
+      APP_PREFIX: "balancer"
+    command: "poetry run python ./app/run_background.py"
+    env_file:
+      - .env
+  target_service_1:
+    build:
+      context: ./src/target_service
+      dockerfile: Dockerfile
+    environment:
+      MAX_WORKERS: 1
+      APP_PREFIX: "target_service_1"
+    ports:
+      - "1001:80"
+    env_file:
+      - .env
+  target_service_2:
+    build:
+      context: ./src/target_service
+      dockerfile: Dockerfile
+    environment:
+      MAX_WORKERS: 1
+      APP_PREFIX: "target_service_2"
+    ports:
+      - "1002:80"
+    env_file:
+      - .env
+  target_service_3:
+    build:
+      context: ./src/target_service
+      dockerfile: Dockerfile
+    environment:
+      MAX_WORKERS: 1
+      APP_PREFIX: "target_service_3"
+    ports:
+      - "1003:80"
+    env_file:
+      - .env
+  target_service_4:
+    build:
+      context: ./src/target_service
+      dockerfile: Dockerfile
+    environment:
+      MAX_WORKERS: 1
+      APP_PREFIX: "target_service_4"
+    ports:
+      - "1004:80"
+    env_file:
+      - .env
+  target_service_5:
+    build:
+      context: ./src/target_service
+      dockerfile: Dockerfile
+    environment:
+      MAX_WORKERS: 1
+      APP_PREFIX: "target_service_5"
+    ports:
+      - "1005:80"
+    env_file:
+      - .env
